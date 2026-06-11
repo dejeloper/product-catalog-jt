@@ -1,0 +1,23 @@
+<article>
+  <div>
+    <img
+      [src]="product().thumbnail"
+      [alt]="product().title"
+      loading="lazy"
+    />
+  </div>
+  <div>
+    <span>{{ product().category }}</span>
+    <h3>{{ product().title }}</h3>
+    <p>${{ product().price.toFixed(2) }}</p>
+    <div>
+      <span [attr.aria-label]="'Puntuación: ' + product().rating + ' de 5'">
+        <span aria-hidden="true">★</span>
+        {{ product().rating }}
+      </span>
+      <span>
+        {{ product().stock > 0 ? product().stock + ' en stock' : 'Agotado' }}
+      </span>
+    </div>
+  </div>
+</article>
