@@ -17,8 +17,61 @@
   } @else {
   <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
     @for (product of products(); track product.id) {
-    <app-product-card [product]="product" (clicked)="goToDetail($event)" />
+    <app-product-card [product]="product" (clicked)="openDetail($event)" />
     }
   </div>
+  }
+
+  @if (selectedProduct(); as p) {
+  <app-modal [open]="modalOpen()" (close)="closeDetail()">
+    <div>
+      <img [src]="p.thumbnail" [alt]="p.title" />
+    </div>
+    <div>
+      <span>{{ p.category }}</span>
+      <h2>{{ p.title }}</h2>
+      <p>{{ p.description }}</p>
+      <p>{{ p.price | currency }}</p>
+
+      <div>
+        <span>Stock: {{ p.stock > 0 ? p.stock + ' disponibles' : 'Agotado' }}</span>
+      </div>
+
+      <div>
+        <span>Puntuación: {{ p.rating }}/5</span>
+      </div>
+
+      @if (p.dimensions) {
+      <div>
+        <h3>Dimensiones</h3>
+        <p>{{ p.dimensions.width }} × {{ p.dimensions.height }} × {{ p.dimensions.depth }} cm</p>
+      </div>
+      }
+
+      @if (p.reviews && p.reviews.length > 0) {
+      <div>
+        <h3>Opiniones</h3>
+        @for (review of p.reviews; track $index) {
+        <div>
+          <strong>{{ review.reviewerName }}</strong>
+          <span>{{ review.rating }}/5</span>
+          <p>{{ review.comment }}</p>
+        </div>
+        }
+      </div>
+      }
+
+      @if (p.images && p.images.length > 1) {
+      <div>
+        <h3>Imágenes</h3>
+        <div>
+          @for (img of p.images; track $index) {
+          <img [src]="img" [alt]="p.title + ' imagen ' + ($index + 1)" loading="lazy" />
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </app-modal>
   }
 </div>
