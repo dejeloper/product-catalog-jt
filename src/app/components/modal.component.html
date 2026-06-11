@@ -1,0 +1,14 @@
+@if (open()) {
+<div class="fixed inset-0 bg-black/50 z-50" (click)="close.emit()"></div>
+<div class="fixed top-0 right-0 w-125 h-full bg-white z-50 overflow-y-auto shadow-[-4px_0_12px_rgba(0,0,0,0.15)]"
+  role="dialog" aria-modal="true">
+  <div class="flex justify-end p-4">
+    <button class="bg-transparent border-none text-xl cursor-pointer px-2 py-1" (click)="close.emit()">
+      ✕
+    </button>
+  </div>
+  <div class="px-6 pb-6">
+    <ng-content />
+  </div>
+</div>
+}

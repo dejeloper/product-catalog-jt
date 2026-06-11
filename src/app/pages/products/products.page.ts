@@ -1,22 +1,25 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
-import {Router} from '@angular/router';
+import {CurrencyPipe} from '@angular/common';
 import {catchError, finalize, of} from 'rxjs';
 import {ProductCard} from '@components/product-card.component';
+import {Modal} from '@components/modal.component';
 import {ProductService} from '@services/product.service';
 import {Product} from '@models/product.interface';
 
 @Component({
   selector: 'app-products',
-  imports: [ProductCard],
+  imports: [ProductCard, Modal, CurrencyPipe],
   templateUrl: 'products.page.html',
 })
 export class ProductsPage implements OnInit {
-  private router = inject(Router);
   private productService = inject(ProductService);
 
   readonly products = signal<Product[]>([]);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
+
+  readonly modalOpen = signal(false);
+  readonly selectedProduct = signal<Product | null>(null);
 
   ngOnInit(): void {
     this.loading.set(true);
@@ -34,7 +37,17 @@ export class ProductsPage implements OnInit {
       .subscribe((res) => this.products.set(res.products));
   }
 
-  goToDetail(id: number): void {
-    this.router.navigate(['products', id]);
+  openDetail(id: number): void {
+    const product = this.products().find((p) => p.id === id);
+    if (product) {
+      this.selectedProduct.set(product);
+      this.modalOpen.set(true);
+    }
   }
+
+  closeDetail(): void {
+    this.modalOpen.set(false);
+  }
+
+
 }
