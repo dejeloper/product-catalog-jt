@@ -2,23 +2,23 @@
   <h1>Productos</h1>
 
   @if (loading()) {
-    <div role="status">
-      <span>Cargando productos...</span>
-    </div>
+  <div role="status">
+    <span>Cargando productos...</span>
+  </div>
   } @else if (error(); as err) {
-    <div role="alert">
-      <p>Error al cargar productos</p>
-      <p>{{ err }}</p>
-    </div>
+  <div role="alert">
+    <p>Error al cargar productos</p>
+    <p>{{ err }}</p>
+  </div>
   } @else if (products().length === 0) {
-    <div role="status">
-      <span>No hay productos disponibles.</span>
-    </div>
+  <div role="status">
+    <span>No hay productos disponibles.</span>
+  </div>
   } @else {
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
-      @for (product of products(); track product.id) {
-        <app-product-card [product]="product" />
-      }
-    </div>
+  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+    @for (product of products(); track product.id) {
+    <app-product-card [product]="product" (clicked)="goToDetail($event)" />
+    }
+  </div>
   }
 </div>
