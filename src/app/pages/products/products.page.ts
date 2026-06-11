@@ -1,4 +1,5 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
+import {Router} from '@angular/router';
 import {catchError, finalize, of} from 'rxjs';
 import {ProductCard} from '@components/product-card.component';
 import {ProductService} from '@services/product.service';
@@ -10,6 +11,7 @@ import {Product} from '@models/product.interface';
   templateUrl: 'products.page.html',
 })
 export class ProductsPage implements OnInit {
+  private router = inject(Router);
   private productService = inject(ProductService);
 
   readonly products = signal<Product[]>([]);
@@ -30,5 +32,9 @@ export class ProductsPage implements OnInit {
         finalize(() => this.loading.set(false)),
       )
       .subscribe((res) => this.products.set(res.products));
+  }
+
+  goToDetail(id: number): void {
+    this.router.navigate(['products', id]);
   }
 }

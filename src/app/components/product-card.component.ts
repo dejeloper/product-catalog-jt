@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {Product} from '@models/product.interface';
 
 @Component({
@@ -7,4 +7,5 @@ import {Product} from '@models/product.interface';
 })
 export class ProductCard {
   readonly product = input.required<Product>();
+  readonly clicked = output<number>();
 }
