@@ -1,22 +1,26 @@
-<article (click)="clicked.emit(product().id)" style="cursor: pointer;">
-  <div>
-    <img
-      [src]="product().thumbnail"
-      [alt]="product().title"
-      loading="lazy"
-    />
+@let p = product();
+@let inStock = p.stock > 0;
+
+<article role="button" tabindex="0" [attr.aria-label]="'Ver ' + p.title" (click)="clicked.emit(p.id)"
+  (keydown.enter)="clicked.emit(p.id)" (keydown.space)="onActivate($event)"
+  class="group flex cursor-pointer flex-col overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md focus-visible:-translate-y-1 focus-visible:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+  <div class="aspect-4/3 overflow-hidden bg-gray-50">
+    <img [src]="p.thumbnail" [alt]="p.title" loading="lazy"
+      class="h-full w-full object-cover transition-transform group-hover:scale-105" />
   </div>
-  <div>
-    <span>{{ product().category }}</span>
-    <h3>{{ product().title }}</h3>
-    <p>${{ product().price.toFixed(2) }}</p>
-    <div>
-      <span [attr.aria-label]="'Puntuación: ' + product().rating + ' de 5'">
-        <span aria-hidden="true">★</span>
-        {{ product().rating }}
-      </span>
-      <span>
-        {{ product().stock > 0 ? product().stock + ' en stock' : 'Agotado' }}
+  <div class="flex flex-1 flex-col gap-1.5 p-4">
+    <span class="w-fit rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold capitalize text-blue-600">
+      {{ p.category }}
+    </span>
+    <h3 class="line-clamp-2 text-sm font-semibold leading-snug text-gray-900">
+      {{ p.title }}
+    </h3>
+    <p class="text-lg font-bold text-blue-600">{{ p.price | currency:'$ ' }}</p>
+
+    <div class="mt-auto flex items-center justify-between text-xs">
+      <app-star-rating [rating]="p.rating" size="sm" />
+      <span class="font-medium" [class]="inStock ? 'text-green-600' : 'text-red-600'">
+        {{ inStock ? '$ ' + p.stock + '.' : 'Agotado' }}
       </span>
     </div>
   </div>
