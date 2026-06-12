@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { Product } from '@models/product.interface';
 import { ImageCarousel } from './image-carousel.component';
@@ -15,7 +15,23 @@ export class ProductDetail {
 
   readonly product = input.required<Product>();
 
+  protected readonly cartItem = computed(() =>
+    this.cartService.items().find((item) => item.product.id === this.product().id),
+  );
+
+  protected readonly isRemoving = computed(() =>
+    this.cartService.removingItems().has(this.product().id),
+  );
+
   protected onAddToCart(): void {
     this.cartService.add(this.product());
+  }
+
+  protected onIncrement(): void {
+    this.cartService.add(this.product());
+  }
+
+  protected onDecrement(): void {
+    this.cartService.updateQuantity(this.product().id, -1);
   }
 }

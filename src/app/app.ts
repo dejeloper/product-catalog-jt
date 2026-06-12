@@ -1,13 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { CartService } from '@services/cart.service';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { CartDropdown } from '@components/cart-dropdown.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, CartDropdown],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
-  protected readonly cartService = inject(CartService);
-}
+export class App { }
