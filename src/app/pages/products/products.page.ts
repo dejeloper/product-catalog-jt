@@ -1,16 +1,16 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { catchError, finalize, of } from 'rxjs';
-import { ProductCard } from '@components/product-card.component';
-import { ProductSort, SortField } from '@components/product-sort.component';
-import { ProductDetail } from '@components/product-detail.component';
-import { Modal } from '@components/modal.component';
+import { ProductCard } from '@components/products/product-card.component';
+import { ProductSort, SortField } from '@components/products/product-sort.component';
+import { ProductDetail } from '@components/products/product-detail.component';
+import { Modal } from '@components/shared/modal.component';
 import { ProductService } from '@services/product.service';
 import { Product } from '@models/product.interface';
 
 @Component({
   selector: 'app-products',
   imports: [ProductCard, ProductSort, ProductDetail, Modal],
-  templateUrl: 'products.page.html'
+  templateUrl: 'products.page.html',
 })
 export class ProductsPage implements OnInit {
   private productService = inject(ProductService);
@@ -64,8 +64,9 @@ export class ProductsPage implements OnInit {
     const asc = this.sortAsc();
 
     return [...list].sort((a, b) => {
-      const aVal = a[field];
-      const bVal = b[field];
+      const key = field as keyof typeof a;
+      const aVal = a[key];
+      const bVal = b[key];
       const cmp =
         typeof aVal === 'string'
           ? aVal.localeCompare(bVal as string)

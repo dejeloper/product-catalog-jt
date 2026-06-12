@@ -1,4 +1,4 @@
-<div class="relative overflow-hidden rounded-xl bg-gray-50" role="region" aria-label="Carrusel de imágenes">
+<div class="relative overflow-hidden rounded-xl bg-gray-50 dark:bg-gray-900" role="region" aria-label="Carrusel de imágenes">
   <div class="aspect-4/3">
     <img [src]="images()[currentIndex]" [alt]="alt() + ' imagen ' + (currentIndex + 1)"
       class="h-full w-full object-cover transition-opacity duration-300" />
@@ -6,12 +6,12 @@
 
   @if (!isSingle) {
   <button type="button" (click)="prev()" aria-label="Imagen anterior"
-    class="absolute left-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/70 text-gray-700 backdrop-blur transition-colors hover:bg-white/90 hover:text-gray-900">
+    class="absolute left-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/70 text-gray-700 backdrop-blur transition-colors hover:bg-white/90 hover:text-gray-900 dark:bg-gray-800/70 dark:text-gray-400 dark:hover:bg-gray-700/90 dark:hover:text-gray-200">
     <span aria-hidden="true" class="text-lg leading-none">‹</span>
   </button>
 
   <button type="button" (click)="next()" aria-label="Imagen siguiente"
-    class="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/70 text-gray-700 backdrop-blur transition-colors hover:bg-white/90 hover:text-gray-900">
+    class="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/70 text-gray-700 backdrop-blur transition-colors hover:bg-white/90 hover:text-gray-900 dark:bg-gray-800/70 dark:text-gray-400 dark:hover:bg-gray-700/90 dark:hover:text-gray-200">
     <span aria-hidden="true" class="text-lg leading-none">›</span>
   </button>
 

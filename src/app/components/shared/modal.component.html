@@ -1,0 +1,17 @@
+<div class="fixed inset-0 z-50 transition-opacity duration-300 ease-out"
+  [class.opacity-100]="open()" [class.pointer-events-none]="!open()" [class.opacity-0]="!open()" (click)="close.emit()">
+  <div class="absolute inset-0 bg-black/50"></div>
+
+  <div #panel role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1"
+    (click)="$event.stopPropagation()" class="absolute inset-0 flex flex-col bg-white shadow-2xl outline-none transition-transform duration-300 ease-out sm:inset-y-0 sm:left-auto sm:right-0 sm:w-full sm:max-w-md dark:bg-gray-900 dark:shadow-black/50"
+    [class.translate-x-0]="open()" [class.translate-x-full]="!open()">
+    <button type="button" (click)="close.emit()" aria-label="Cerrar"
+      class="absolute right-4 top-4 z-10 grid h-9 w-9 place-items-center rounded-full bg-white/80 text-gray-500 backdrop-blur transition-colors hover:bg-gray-100 hover:text-gray-900 dark:bg-gray-800/80 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200">
+      <span aria-hidden="true" class="text-lg leading-none">✕</span>
+    </button>
+
+    <div class="flex-1 overflow-y-auto overscroll-contain p-6">
+      <ng-content />
+    </div>
+  </div>
+</div>

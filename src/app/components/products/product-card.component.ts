@@ -1,7 +1,7 @@
 import { Component, computed, inject, input, output } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { Product } from '@models/product.interface';
-import { StarRating } from './star-rating.component';
+import { StarRating } from '../shared/star-rating.component';
 import { CartService } from '@services/cart.service';
 
 @Component({

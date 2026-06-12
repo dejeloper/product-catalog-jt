@@ -1,8 +1,8 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { Product } from '@models/product.interface';
-import { ImageCarousel } from './image-carousel.component';
-import { StarRating } from './star-rating.component';
+import { ImageCarousel } from '../shared/image-carousel.component';
+import { StarRating } from '../shared/star-rating.component';
 import { CartService } from '@services/cart.service';
 
 @Component({
