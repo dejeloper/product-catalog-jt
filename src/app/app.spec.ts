@@ -1,23 +1,40 @@
-import { TestBed } from '@angular/core/testing';
-import { App } from './app';
+import {TestBed} from '@angular/core/testing';
+import {provideZonelessChangeDetection} from '@angular/core';
+import {provideRouter} from '@angular/router';
+import {App} from './app';
 
 describe('App', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
+    window.matchMedia = vi.fn().mockReturnValue({matches: false});
+    TestBed.configureTestingModule({
       imports: [App],
-    }).compileComponents();
+      providers: [provideZonelessChangeDetection(), provideRouter([])],
+    });
+    await TestBed.compileComponents();
   });
 
-  it('should create the app', () => {
+  it('creates the app', () => {
     const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should render title', async () => {
+  it('renders header with catalog link', () => {
     const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, productCatalog_jt');
+    fixture.detectChanges();
+    const link: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(link).toBeTruthy();
+    expect(link.textContent).toContain('Catálogo de Productos');
+  });
+
+  it('renders router-outlet', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('router-outlet')).toBeTruthy();
+  });
+
+  it('renders cart-dropdown component', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('app-cart-dropdown')).toBeTruthy();
   });
 });
