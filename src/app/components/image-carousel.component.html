@@ -1,0 +1,28 @@
+<div class="relative overflow-hidden rounded-xl bg-gray-50" role="region" aria-label="Carrusel de imágenes">
+  <div class="aspect-4/3">
+    <img [src]="images()[currentIndex]" [alt]="alt() + ' imagen ' + (currentIndex + 1)"
+      class="h-full w-full object-cover transition-opacity duration-300" />
+  </div>
+
+  @if (!isSingle) {
+  <button type="button" (click)="prev()" aria-label="Imagen anterior"
+    class="absolute left-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/70 text-gray-700 backdrop-blur transition-colors hover:bg-white/90 hover:text-gray-900">
+    <span aria-hidden="true" class="text-lg leading-none">‹</span>
+  </button>
+
+  <button type="button" (click)="next()" aria-label="Imagen siguiente"
+    class="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/70 text-gray-700 backdrop-blur transition-colors hover:bg-white/90 hover:text-gray-900">
+    <span aria-hidden="true" class="text-lg leading-none">›</span>
+  </button>
+
+  <div class="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5" role="tablist" aria-label="Seleccionar imagen">
+    @for (img of images(); track $index) {
+    <button type="button" role="tab" [attr.aria-selected]="$index === currentIndex" [attr.aria-label]="'Imagen ' + ($index + 1)"
+      (click)="goTo($index)"
+      class="h-2 rounded-full transition-all"
+      [class]="$index === currentIndex ? 'w-5 bg-white' : 'w-2 bg-white/50 hover:bg-white/75'">
+    </button>
+    }
+  </div>
+  }
+</div>
