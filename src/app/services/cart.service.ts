@@ -1,5 +1,7 @@
-import {Injectable, signal, computed} from '@angular/core';
+import {Injectable, signal, computed, effect} from '@angular/core';
 import {Product} from '@models/product.interface';
+
+const STORAGE_KEY = 'cart_items';
 
 export interface CartItem {
   product: Product;
@@ -11,6 +13,26 @@ export class CartService {
   readonly items = signal<CartItem[]>([]);
 
   readonly removingItems = signal<Set<number>>(new Set());
+
+  constructor() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed: CartItem[] = JSON.parse(saved);
+        this.items.set(parsed.filter((i) => i.quantity > 0));
+      } catch { /* ignore corrupt data */ }
+    }
+
+    effect(() => {
+      const data = this.items();
+      const clean = data.filter((i) => i.quantity > 0);
+      if (clean.length === 0) {
+        localStorage.removeItem(STORAGE_KEY);
+      } else {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(clean));
+      }
+    });
+  }
 
   readonly stockLimitReached = computed<ReadonlyMap<number, boolean>>(() => {
     const result = new Map<number, boolean>();
