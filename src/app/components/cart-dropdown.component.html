@@ -1,0 +1,51 @@
+<div class="relative">
+  <button type="button" (click)="toggle($event)" aria-label="Abrir carrito"
+    class="relative flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-100"
+    [class.opacity-50]="isCartPage()">
+    🛒
+    @if (cartService.count()) {
+    <span class="flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-600 px-1 text-xs text-white">
+      {{ cartService.count() }}
+    </span>
+    }
+  </button>
+
+  @if (open()) {
+  @let items = cartService.items();
+  <div #panel class="absolute right-0 top-full z-50 mt-2 w-80 rounded-xl border border-gray-200 bg-white shadow-lg">
+    @if (items.length === 0) {
+    <div class="p-6 text-center text-sm text-gray-500">
+      Tu carrito está vacío
+    </div>
+    } @else {
+    <div class="max-h-72 divide-y divide-gray-100 overflow-y-auto">
+      @for (item of items; track item.product.id) {
+      <div class="flex items-center gap-3 px-4 py-3">
+        <img [src]="item.product.thumbnail" [alt]="item.product.title"
+          class="h-10 w-10 shrink-0 rounded-lg object-cover" />
+        <div class="min-w-0 flex-1">
+          <p class="truncate text-sm font-medium text-gray-900">{{ item.product.title }}</p>
+          <p class="text-xs text-gray-500">{{ item.product.price | currency:'$ ' }} x {{ item.quantity }}</p>
+        </div>
+        <p class="text-sm font-semibold text-gray-900">{{ item.product.price * item.quantity | currency:'$ ' }}</p>
+      </div>
+      }
+    </div>
+
+    <div class="border-t border-gray-100 px-4 py-3">
+      <div class="flex items-center justify-between text-sm">
+        <span class="font-medium text-gray-700">Total</span>
+        <span class="text-base font-bold text-blue-600">{{ cartService.total() | currency:'$ ' }}</span>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-100 px-4 py-3">
+      <a routerLink="/cart" (click)="close()"
+        class="block w-full rounded-lg bg-blue-600 px-4 py-2 text-center text-sm font-semibold text-white no-underline transition-colors hover:bg-blue-700">
+        Ir al carrito
+      </a>
+    </div>
+    }
+  </div>
+  }
+</div>

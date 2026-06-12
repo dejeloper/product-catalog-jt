@@ -3,15 +3,7 @@
   <a routerLink="/products" class="text-lg font-bold text-gray-900 no-underline">
     Catálogo de Productos
   </a>
-  <a routerLink="/#"
-    class="relative flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold text-gray-700 no-underline transition-colors hover:bg-gray-100">
-    🛒
-    @if (cartService.count()) {
-    <span class="flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-600 px-1 text-xs text-white">
-      {{ cartService.count() }}
-    </span>
-    }
-  </a>
+  <app-cart-dropdown />
 </header>
 
 <main class="mx-auto max-w-7xl px-4 py-6">
