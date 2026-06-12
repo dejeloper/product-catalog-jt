@@ -22,6 +22,9 @@ export class ProductsPage implements OnInit {
   readonly modalOpen = signal(false);
   readonly selectedProduct = signal<Product | null>(null);
 
+  readonly search = signal('');
+  readonly selectedCategory = signal<string | null>(null);
+
   readonly skeletons = Array.from({ length: 10 });
 
   readonly sortBy = signal<SortField>('id');
@@ -34,8 +37,29 @@ export class ProductsPage implements OnInit {
     { key: 'rating', label: 'Rating' },
   ];
 
-  readonly sortedProducts = computed(() => {
+  readonly categories = computed(() => {
+    const seen = new Set<string>();
+    for (const p of this.products()) {
+      if (p.category) seen.add(p.category);
+    }
+    return Array.from(seen).sort();
+  });
+
+  readonly filteredProducts = computed(() => {
     const list = this.products();
+    const query = this.search().toLowerCase().trim();
+    const cat = this.selectedCategory();
+
+    return list.filter((p) => {
+      if (query && !p.title.toLowerCase().includes(query)) return false;
+      if (cat && p.category !== cat) return false;
+      return true;
+    });
+  });
+
+  readonly sortedProducts = computed(() => {
+    const list = this.filteredProducts();
+    if (list.length === 0) return [];
     const field = this.sortBy();
     const asc = this.sortAsc();
 

@@ -20,13 +20,36 @@
     <span>No hay productos disponibles.</span>
   </div>
   } @else {
-  <app-product-sort [activeKey]="sortBy()" [ascending]="sortAsc()" [options]="sortOptions" (toggleSort)="toggleSort($event)" />
+  <div class="mb-4 max-w-md space-y-2">
+    <div class="flex gap-2">
+      <div class="relative min-w-0 flex-1">
+        <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">🔍</span>
+        <input type="search" [value]="search()" (input)="search.set($any($event.target).value)"
+          placeholder="Buscar por nombre…"
+          class="w-full rounded-lg border border-gray-300 px-4 py-2 pl-9 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200" />
+      </div>
+      <select [value]="selectedCategory() ?? ''" (change)="selectedCategory.set($any($event.target).value || null)"
+        class="w-44 rounded-lg border border-gray-300 px-4 py-2 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+        <option value="">Todas las categorías</option>
+        @for (cat of categories(); track cat) {
+        <option [value]="cat">{{ cat }}</option>
+        }
+      </select>
+    </div>
+    <app-product-sort [activeKey]="sortBy()" [ascending]="sortAsc()" [options]="sortOptions" (toggleSort)="toggleSort($event)" />
+  </div>
 
+  @if (sortedProducts().length === 0) {
+  <div class="rounded-xl bg-gray-50 px-6 py-12 text-center text-gray-500" role="status">
+    <span>No se encontraron productos.</span>
+  </div>
+  } @else {
   <div class="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4">
     @for (product of sortedProducts(); track product.id) {
     <app-product-card [product]="product" (clicked)="openDetail($event)" />
     }
   </div>
+  }
   }
 
   @if (selectedProduct(); as p) {
