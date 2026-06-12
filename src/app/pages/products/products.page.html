@@ -1,22 +1,29 @@
-<div>
-  <h1>Productos</h1>
+<div class="mx-auto max-w-7xl p-6">
+  <header class="mb-5">
+    <h1 class="text-3xl font-bold text-gray-900">Productos</h1>
+  </header>
 
   @if (loading()) {
-  <div role="status">
-    <span>Cargando productos...</span>
+  <app-product-sort [activeKey]="sortBy()" [ascending]="sortAsc()" [options]="sortOptions" (toggleSort)="toggleSort($event)" />
+  <div class="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4" role="status" aria-label="Cargando productos">
+    @for (_ of skeletons; track $index) {
+    <div class="h-72 animate-pulse rounded-xl bg-gray-200" aria-hidden="true"></div>
+    }
   </div>
   } @else if (error(); as err) {
-  <div role="alert">
-    <p>Error al cargar productos</p>
-    <p>{{ err }}</p>
+  <div class="rounded-xl bg-red-50 px-6 py-12 text-center text-red-700" role="alert">
+    <p class="font-semibold">Error al cargar productos</p>
+    <p class="mt-1 text-sm">{{ err }}</p>
   </div>
   } @else if (products().length === 0) {
-  <div role="status">
+  <div class="rounded-xl bg-gray-50 px-6 py-12 text-center text-gray-500" role="status">
     <span>No hay productos disponibles.</span>
   </div>
   } @else {
-  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
-    @for (product of products(); track product.id) {
+  <app-product-sort [activeKey]="sortBy()" [ascending]="sortAsc()" [options]="sortOptions" (toggleSort)="toggleSort($event)" />
+
+  <div class="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4">
+    @for (product of sortedProducts(); track product.id) {
     <app-product-card [product]="product" (clicked)="openDetail($event)" />
     }
   </div>
@@ -24,54 +31,7 @@
 
   @if (selectedProduct(); as p) {
   <app-modal [open]="modalOpen()" (close)="closeDetail()">
-    <div>
-      <img [src]="p.thumbnail" [alt]="p.title" />
-    </div>
-    <div>
-      <span>{{ p.category }}</span>
-      <h2>{{ p.title }}</h2>
-      <p>{{ p.description }}</p>
-      <p>{{ p.price | currency }}</p>
-
-      <div>
-        <span>Stock: {{ p.stock > 0 ? p.stock + ' disponibles' : 'Agotado' }}</span>
-      </div>
-
-      <div>
-        <span>Puntuación: {{ p.rating }}/5</span>
-      </div>
-
-      @if (p.dimensions) {
-      <div>
-        <h3>Dimensiones</h3>
-        <p>{{ p.dimensions.width }} × {{ p.dimensions.height }} × {{ p.dimensions.depth }} cm</p>
-      </div>
-      }
-
-      @if (p.reviews && p.reviews.length > 0) {
-      <div>
-        <h3>Opiniones</h3>
-        @for (review of p.reviews; track $index) {
-        <div>
-          <strong>{{ review.reviewerName }}</strong>
-          <span>{{ review.rating }}/5</span>
-          <p>{{ review.comment }}</p>
-        </div>
-        }
-      </div>
-      }
-
-      @if (p.images && p.images.length > 1) {
-      <div>
-        <h3>Imágenes</h3>
-        <div>
-          @for (img of p.images; track $index) {
-          <img [src]="img" [alt]="p.title + ' imagen ' + ($index + 1)" loading="lazy" />
-          }
-        </div>
-      </div>
-      }
-    </div>
+    <app-product-detail [product]="p" />
   </app-modal>
   }
 </div>
