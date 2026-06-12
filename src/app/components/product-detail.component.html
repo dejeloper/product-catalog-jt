@@ -22,6 +22,11 @@
   {{ inStock ? p.stock + ' disponibles' : 'Agotado' }}
 </p>
 
+<button (click)="onAddToCart()"
+  class="mt-4 w-full cursor-pointer rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+  Agregar al carrito
+</button>
+
 @if (p.dimensions) {
 <section class="mt-5">
   <h3 class="mb-2 font-semibold text-gray-900">Dimensiones</h3>

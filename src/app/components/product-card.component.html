@@ -23,5 +23,11 @@
         {{ inStock ? '$ ' + p.stock + '.' : 'Agotado' }}
       </span>
     </div>
+
+    <button
+      (click)="onAddToCart($event)"
+      class="mt-2 w-full cursor-pointer rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+      Agregar
+    </button>
   </div>
 </article>
