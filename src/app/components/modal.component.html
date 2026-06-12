@@ -1,14 +1,18 @@
-@if (open()) {
-<div class="fixed inset-0 bg-black/50 z-50" (click)="close.emit()"></div>
-<div class="fixed top-0 right-0 w-125 h-full bg-white z-50 overflow-y-auto shadow-[-4px_0_12px_rgba(0,0,0,0.15)]"
-  role="dialog" aria-modal="true">
-  <div class="flex justify-end p-4">
-    <button class="bg-transparent border-none text-xl cursor-pointer px-2 py-1" (click)="close.emit()">
-      ✕
+<div class="fixed inset-0 z-50 transition-opacity duration-300 ease-out"
+  [class]="open() ? 'opacity-100' : 'pointer-events-none opacity-0'" (click)="close.emit()">
+  <div class="absolute inset-0 bg-black/50"></div>
+
+  <div #panel role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1"
+    (click)="$event.stopPropagation()" class="absolute inset-0 flex flex-col bg-white shadow-2xl outline-none transition-transform duration-300 ease-out
+           sm:inset-y-0 sm:left-auto sm:right-0 sm:w-full sm:max-w-md"
+    [class]="open() ? 'translate-x-0' : 'translate-x-full'">
+    <button type="button" (click)="close.emit()" aria-label="Cerrar"
+      class="absolute right-4 top-4 z-10 grid h-9 w-9 place-items-center rounded-full bg-white/80 text-gray-500 backdrop-blur transition-colors hover:bg-gray-100 hover:text-gray-900">
+      <span aria-hidden="true" class="text-lg leading-none">✕</span>
     </button>
-  </div>
-  <div class="px-6 pb-6">
-    <ng-content />
+
+    <div class="flex-1 overflow-y-auto overscroll-contain p-6">
+      <ng-content />
+    </div>
   </div>
 </div>
-}
