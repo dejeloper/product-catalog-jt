@@ -59,9 +59,9 @@
   <div class="flex flex-col gap-3">
     @for (review of p.reviews; track $index) {
     <article class="rounded-lg border border-gray-200 p-3">
-      <header class="flex items-center justify-between">
+      <header class="flex items-center justify-between gap-2">
         <strong class="text-gray-900">{{ review.reviewerName }}</strong>
-        <span class="text-sm text-amber-500">{{ review.rating }}/5</span>
+        <app-star-rating [rating]="review.rating" size="sm" />
       </header>
       <p class="mt-1.5 text-gray-500">{{ review.comment }}</p>
     </article>
